@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Calculator</title>
+  <link rel="stylesheet" href="task3style.css">
+</head>
+<body>
+  <div id="calculator">
+    <div id="display">0</div>
+    <button class="double operator">C</button>
+    <button class="number-left">%</button>
+    <button class="operator-right">/</button>
+    <button class="number-lef">7</button>
+    <button class="number-left">8</button>
+    <button class="number-left">9</button>
+   
+    <button class="operator-right">x</button>
+    <button class="number-left">4</button>
+    <button class="number-left">5</button>
+    <button class="number-left">6</button>
+    <button class="operator-right">-</button>
+    <button class="number-left">1</button>
+    <button class="number-left">2</button>
+    <button class="number-left">3</button>
+     <button class="operator-right">+</button>
+     <button class="double number-left">0</button>
+    <button class="number-left">.</button>
+    
+    <button id="equals" class="double operator" style="grid-column: span 2;">=</button>
+  </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let display = document.getElementById('display');
+      let buttons = document.querySelectorAll('button');
+
+      let currentInput = '0';
+      let operator = null;
+      let previousInput = '0';
+
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          handleButtonClick(button.innerText);
+          updateDisplay();
+        });
+      });
+
+      function handleButtonClick(value) {
+        if (isNumber(value)) {
+          handleNumber(value);
+        } else if (isOperator(value)) {
+          handleOperator(value);
+        } else if (value === '=') {
+          handleEquals();
+        } else if (value === 'C') {
+          resetCalculator();
+        }
+      }
+
+      function isNumber(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+      }
+
+      function isOperator(value) {
+        return ['+', '-', 'x', '/'].includes(value);
+      }
+
+      function handleNumber(value) {
+        if (currentInput === '0' || isOperator(currentInput)) {
+          currentInput = value;
+        } else {
+          currentInput += value;
+        }
+      }
+
+      function handleOperator(value) {
+        if (operator !== null) {
+          handleEquals();
+        }
+        operator = value;
+        previousInput = currentInput;
+        currentInput = '0';
+      }
+
+      function handleEquals() {
+        let result;
+        const prev = parseFloat(previousInput);
+        const current = parseFloat(currentInput);
+
+        switch (operator) {
+          case '+':
+            result = prev + current;
+            break;
+          case '-':
+            result = prev - current;
+            break;
+          case 'x':
+            result = prev * current;
+            break;
+          case '/':
+            result = prev / current;
+            break;
+          default:
+            return;
+        }
+
+        currentInput = result.toString();
+        operator = null;
+      }
+
+      function resetCalculator() {
+        currentInput = '0';
+        operator = null;
+        previousInput = '0';
+      }
+
+      function updateDisplay() {
+        display.innerText = currentInput;
+      }
+    });
+  </script>
+</body>
+</html>
+  <!-- WORKING STYLE : FIRST CLICK A NUMBER THEN PRESS SOME
+     OPERATOR THEN OTHER NUMBER AND AT LAST CLICK EQUAL
+ -->
