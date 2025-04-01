@@ -1,4 +1,4 @@
-# CODSOFT
+# Web Development (Html, CSS & JavaScript)
 Web Development 
 ## Task 1: Landing Page
 
